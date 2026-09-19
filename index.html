@@ -567,17 +567,26 @@
       const detdevModal = document.getElementById('detdev-modal');
       detdevModal.classList.remove('hidden');
 
+      // Preload semua GIF agar siap di memori browser
       const gifList = [
         "gif_kamu.gif",
         "gif_kedua.gif",
         "gif_ketiga.gif"
       ];
+      const preloadedGifs = gifList.map(src => {
+        const img = new Image();
+        img.src = src + "?v=" + Date.now();
+        return img;
+      });
+
       let currentGifIndex = 0;
       const detdevGifElement = document.getElementById('detdev-gif');
+      // Set GIF pertama dengan cache-bust
+      detdevGifElement.src = preloadedGifs[0].src;
       
       const gifInterval = setInterval(() => {
-        currentGifIndex = (currentGifIndex + 1) % gifList.length;
-        detdevGifElement.src = gifList[currentGifIndex];
+        currentGifIndex = (currentGifIndex + 1) % preloadedGifs.length;
+        detdevGifElement.src = preloadedGifs[currentGifIndex].src;
       }, 5000);
 
       const selectedAudio = document.getElementById('detdev-song');
