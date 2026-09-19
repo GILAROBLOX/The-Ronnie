@@ -250,7 +250,10 @@
     }
 
     #detdev-gif {
-      max-width: 75%;
+      width: 300px;
+      height: 300px;
+      object-fit: fill;
+      max-width: 75vw;
       max-height: 65vh;
       border: 2px solid var(--cmd-yellow);
     }
@@ -335,10 +338,10 @@
 
   <!-- 5. MODAL KHUSUS DETDEV (GIF & SINGLE TRACK) -->
   <div id="detdev-modal" class="hidden">
-    <h2 style="color: var(--cmd-yellow); margin-bottom: 15px; font-size: 1.5rem;">[ THX WOK UDAH COABIN :) ]</h2>
+    <h2 style="color: var(--cmd-yellow); margin-bottom: 15px; font-size: 1.5rem;"> THX UDAH COBAIN WOK :)</h2>
     <!-- ✏️ Ganti 'gif_kamu.gif' dengan file GIF milikmu -->
     <img id="detdev-gif" src="gif_kamu.gif" alt="Custom GIF">
-    <p style="color: var(--cmd-text); margin-top: 10px; font-size: 0.9rem;">si jawir joget loh ya</p>
+    <p style="color: var(--cmd-text); margin-top: 10px; font-size: 0.9rem;">persembahan tarian dari si jawir</p>
     <p style="color: var(--cmd-yellow); margin-top: 5px; font-size: 0.8rem; font-weight: bold;">[ WINDOW WILL CLOSE AUTOMATICALLY WHEN SONG ENDS ]</p>
   </div>
 
@@ -564,12 +567,26 @@
       const detdevModal = document.getElementById('detdev-modal');
       detdevModal.classList.remove('hidden');
 
+      const gifList = [
+        "gif_kamu.gif",
+        "gif_kedua.gif",
+        "gif_ketiga.gif"
+      ];
+      let currentGifIndex = 0;
+      const detdevGifElement = document.getElementById('detdev-gif');
+      
+      const gifInterval = setInterval(() => {
+        currentGifIndex = (currentGifIndex + 1) % gifList.length;
+        detdevGifElement.src = gifList[currentGifIndex];
+      }, 5000);
+
       const selectedAudio = document.getElementById('detdev-song');
       if (selectedAudio) {
         selectedAudio.currentTime = 0;
         selectedAudio.play().catch(err => console.log("Audio error:", err));
 
         selectedAudio.onended = () => {
+          clearInterval(gifInterval);
           detdevModal.classList.add('hidden');
           window.close(); 
           
